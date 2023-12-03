@@ -13,7 +13,7 @@ gear_ids = defaultdict(list)
 def scan_for_symbols(str, id, x, y):
     symbol_matches = list(re.finditer(SYMBOL_REGEX, str))
     for symbol in symbol_matches:
-        if symbol.group(0) == "*":
+        if symbol.group(0) == GEAR:
             gear_ids[(y, x + symbol.span()[0])].append(id)
     return len(symbol_matches) > 0
 
