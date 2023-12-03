@@ -1,3 +1,3 @@
-https://adventofcode.com/2023
+https://adventofcode.com
 
 Just for fun.
