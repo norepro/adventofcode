@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 
-import functools
 import numpy as np
-from tqdm import tqdm
+
 
 def tilt_north(grid):
     for row in range(1, len(grid)):
@@ -26,9 +25,7 @@ def from_grid_string(grid_string):
     return list(map(list, grid_string.split("|")))
 
 
-@functools.cache
 def spin_cycle(grid_string):
-    # Expensive but mostly avoided by memoization
     grid = from_grid_string(grid_string)
     for i in range(4):
         tilt_north(grid)
@@ -52,11 +49,16 @@ with open("input.txt", "r") as f:
 tilt_north(grid)
 print(f"Part 1: {get_load(grid)}")
 
-# NB - This is dumb. While it runs in about 90 seconds on my machine, it could
-# be much faster by detecting the stable grid cycle and extrapolating the
-# final grid from there. This should be possible by detecting if a grid has
-# already been seen, but that's another time.
+seen = {}
 grid_string = to_grid_string(grid)
-for _ in tqdm(range(1_000_000_000)):
-    grid_string = spin_cycle(grid_string)
+num_cycles = 1_000_000_000
+for i in range(num_cycles):
+    if grid_string in seen:
+        period = i - seen[grid_string]
+        target_cycle = period + num_cycles % period
+        grid_string = [x for x in seen if seen[x] == target_cycle][0]
+        break
+    else:
+        seen[grid_string] = i
+        grid_string = spin_cycle(grid_string)
 print(f"Part 2: {get_load(from_grid_string(grid_string))}")
