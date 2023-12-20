@@ -42,7 +42,7 @@ class ConjunctionModule:
             self.last_pulses[sender] = False
 
 
-class BroadcoasterModule:
+class BroadcasterModule:
     def __init__(self, name, targets):
         self.name = name
         self.targets = targets
@@ -87,7 +87,7 @@ def create_module(string):
     elif sender.startswith("&"):
         return ConjunctionModule(sender[1:], targets)
     else:
-        return BroadcoasterModule(sender, targets)
+        return BroadcasterModule(sender, targets)
 
 
 def register_conjunction_inputs(modules):
@@ -121,7 +121,7 @@ with open("input.txt", "r") as f:
     for line in f:
         module = create_module(line)
         modules[module.name] = module
-modules["button"] = BroadcoasterModule("button", ["broadcaster"])
+modules["button"] = BroadcasterModule("button", ["broadcaster"])
 register_conjunction_inputs(modules)
 
 # Part 1
